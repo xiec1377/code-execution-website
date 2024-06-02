@@ -5,10 +5,31 @@ function CodeEditor() {
   const [code, setCode] = useState("");
   const handleTestCode = async () => {
     console.log(`HANDLE TEST CODE...`)
+    const response = await fetch("http://localhost:8000/test-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code }),
+    });
+    const result = await response.json();
+    console.log(`Response:`)
+    console.log(result)
   };
 
   const handleSubmit = async () => {
     console.log(`HANDLE SUBMIT...`)
+    try {
+      const response = await fetch('http://localhost:8000/submit-code', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code }),
+      });
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error('Error submitting code:', error);
+    }
   };
   return (
     <div className="">
