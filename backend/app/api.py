@@ -29,7 +29,8 @@ def execute_code(code: str):
         result = subprocess.run(['python', 'temp_code.py'], capture_output=True, text=True, timeout=5)
         os.remove('temp_code.py')
         if result.returncode != 0:
-            raise ValueError(f"Subprocess returned non-zero return code: {result.returncode}, Error: {result.stderr}")
+            raise ValueError("Subprocess returned non-zero return code")
+            # return result.returncode
         return result.stdout
     except Exception as e:
         raise ValueError(f"Error executing code: {str(e)}")
@@ -43,8 +44,17 @@ async def test_code(payload: dict):
     code = payload.get("code")
     if code is None:
         return {"error": "Field 'code' is required."}
-    output = execute_code(code)
-    return {"output": output}
+    # output = execute_code(code)
+
+    try:
+        output = execute_code(code)
+        return {"output": output}
+    except ValueError as ve:
+        return {"output": "ERROR"}
+
+    # if output != 0:
+    #     return{"output": "ERROR"}
+    # return {"output": output}
     # return {"message": "Test code received successfully"}
 
 
