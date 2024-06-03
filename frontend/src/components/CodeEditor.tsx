@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function CodeEditor() {
   const [code, setCode] = useState("");
@@ -17,10 +16,10 @@ function CodeEditor() {
       const result = await response.json();
       console.log(`Response:`);
       console.log(result);
-      toast.success('Successfully tested code');
+      toast.success("Successfully tested code");
     } catch (error) {
       console.error("Error testing code:", error);
-      toast.error('Error testing code')
+      toast.error("Error testing code");
     }
   };
 
@@ -36,10 +35,10 @@ function CodeEditor() {
       });
       const result = await response.json();
       console.log(result);
-      toast.success('Successfully submitted code');
+      toast.success("Successfully submitted code");
     } catch (error) {
       console.error("Error submitting code:", error);
-      toast.error('Error submitting code')
+      toast.error("Error submitting code");
     }
   };
   return (
@@ -48,7 +47,7 @@ function CodeEditor() {
         height="60vh"
         width="100vw"
         defaultLanguage="python"
-        defaultValue="# Write your PythonF code here"
+        defaultValue="# Write your Python code here"
         onChange={(value) => setCode(value || "")}
       />
       <button

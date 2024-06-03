@@ -21,7 +21,6 @@ app.add_middleware(
 
 
 def execute_code(code: str):
-    # return "OUTPUT"
     try:
         # Create a temporary file to execute code safely
         with open('temp_code.py', 'w') as f:
@@ -29,43 +28,38 @@ def execute_code(code: str):
         result = subprocess.run(['python', 'temp_code.py'], capture_output=True, text=True, timeout=5)
         os.remove('temp_code.py')
         if result.returncode != 0:
-            raise ValueError("Subprocess returned non-zero return code")
-            # return result.returncode
+            raise ValueError("Code execution returned non-zero return code")
         return result.stdout
     except Exception as e:
-        raise ValueError(f"Error executing code: {str(e)}")
-
-@app.get("/", tags=["root"])
-async def read_root() -> dict:
-    return {"message": "Welcome to your todo list."}
+        raise ValueError("Error executing code...")
 
 @app.post("/test-code")
 async def test_code(payload: dict):
     code = payload.get("code")
     if code is None:
-        return {"error": "Field 'code' is required."}
-    # output = execute_code(code)
-
+        # return {"error": "Field 'code' is required."}
+        raise ValueError("Code is required to test")
     try:
         output = execute_code(code)
         return {"output": output}
     except ValueError as ve:
-        return {"output": "ERROR"}
-
-    # if output != 0:
-    #     return{"output": "ERROR"}
-    # return {"output": output}
-    # return {"message": "Test code received successfully"}
+        raise ValueError("Code execution returned non-zero return code")
 
 
 @app.post("/submit-code")
 async def submit_code(payload: dict):
     code = payload.get("code")
     if code is None:
-        return {"error": "Field 'code' is required."}
-    output = execute_code(code)
+         # return {"error": "Field 'code' is required."}
+        raise ValueError("Code is required to test")
+    try:
+        output = execute_code(code)
+        return {"output": output}
+    except ValueError as ve:
+        raise ValueError("Code execution returned non-zero return code")
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
+    # Use parameterized queries to prevent SQL injection (malicious code)
     cursor.execute("INSERT INTO submissions (code, output) VALUES (?, ?)", (code, output))
     conn.commit()
     conn.close()
