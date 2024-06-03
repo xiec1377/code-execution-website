@@ -41,8 +41,8 @@ async def test_code(payload: dict):
         raise ValueError("Code is required to test")
     try:
         output = execute_code(code)
-        return {"output": output}
-    except ValueError as ve:
+        return output
+    except Exception as e:
         raise ValueError("Code execution returned non-zero return code")
 
 
@@ -54,13 +54,12 @@ async def submit_code(payload: dict):
         raise ValueError("Code is required to test")
     try:
         output = execute_code(code)
-        return {"output": output}
-    except ValueError as ve:
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        # Use parameterized queries to prevent SQL injection (malicious code)
+        cursor.execute("INSERT INTO submissions (code, output) VALUES (?, ?)", (code, output))
+        conn.commit()
+        conn.close()
+        return output
+    except Exception as e:
         raise ValueError("Code execution returned non-zero return code")
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    # Use parameterized queries to prevent SQL injection (malicious code)
-    cursor.execute("INSERT INTO submissions (code, output) VALUES (?, ?)", (code, output))
-    conn.commit()
-    conn.close()
-    return {'output': output}
