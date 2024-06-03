@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Editor from "@monaco-editor/react";
 import { toast } from "react-toastify";
-// import { ReactTerminal } from "react-terminal";
 import "react-toastify/dist/ReactToastify.css";
 
 function CodeEditor() {
@@ -21,7 +20,7 @@ function CodeEditor() {
       console.log(`Response:`);
       console.log(result);
       setResult(result);
-      console.log(`type of result: ${typeof result}`)
+      console.log(`type of result: ${typeof result}`);
       toast.success("Successfully tested code");
     } catch (error) {
       console.error("Error testing code:", error);
@@ -50,39 +49,50 @@ function CodeEditor() {
     }
   };
 
-  // const parseResult = (result: object) => {
-  //   const parse = result["message"]
-  // }
   return (
     <div className="">
-      <div className="flex">
+      <span className="flex w-full space-x-4">
         <Editor
           height="60vh"
-          width="100vw"
+          width="50%"
           defaultLanguage="python"
           defaultValue="# Write your Python code here"
           onChange={(value) => setCode(value || "")}
+          options={{
+            fontSize: 16,
+            lineNumbers: "on",
+            wordWrap: "on",
+            automaticLayout: true,
+          }}
         />
         <Editor
           height="60vh"
-          width="100vw"
+          width="50%"
           defaultLanguage="python"
           defaultValue={"Waiting for code..."}
           value={result}
+          options={{
+            fontSize: 16,
+            lineNumbers: "off",
+            readOnly: true,
+            wordWrap: "on",
+          }}
         />
-      </div>
-      <button
-        onClick={handleTestCode}
-        className="mt-4 p-2 bg-blue-500 text-white rounded"
-      >
-        Test Code
-      </button>
-      <button
-        onClick={handleSubmit}
-        className="mt-4 p-2 bg-green-500 text-white rounded"
-      >
-        Submit
-      </button>
+      </span>
+      <span className="flex justify-center space-x-4 mt-4 w-full">
+        <button
+          onClick={handleTestCode}
+          className="mt-4 bg-blue-500 text-white rounded w-100"
+        >
+          Test Code
+        </button>
+        <button
+          onClick={handleSubmit}
+          className="mt-4 bg-green-500 text-white rounded w-100"
+        >
+          Submit
+        </button>
+      </span>
     </div>
   );
 }
