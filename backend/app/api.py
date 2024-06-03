@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import subprocess
 import os
+import sqlite3
 
 app = FastAPI()
 
@@ -48,8 +49,14 @@ async def test_code(payload: dict):
 
 
 @app.post("/submit-code")
-async def test_code(payload: dict):
+async def submit_code(payload: dict):
     code = payload.get("code")
     if code is None:
         return {"error": "Field 'code' is required."}
-    return {"message": "Submission code received successfully"}
+    output = execute_code(code)
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO submissions (code, output) VALUES (?, ?)", (code, output))
+    conn.commit()
+    conn.close()
+    return {'output': output}
