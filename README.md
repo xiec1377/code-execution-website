@@ -1,8 +1,3 @@
-### Name: Catherine Xie
-### WatID: 20898073
-### UW Student email: c48xie@uwaterloo.ca
-
-
 # Frontend
 Run 
 ```
@@ -14,5 +9,8 @@ Run
 ```
 python main.py
 ```
-
+View database here:
+```
+sqlite3 database.db
+```
 
