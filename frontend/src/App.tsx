@@ -2,11 +2,7 @@ import "./App.css";
 import CodeEditor from "./components/CodeEditor";
 
 function App() {
-  return (
-    <div className="">
-      <CodeEditor />
-    </div>
-  );
+  return <CodeEditor />;
 }
 
 export default App;
